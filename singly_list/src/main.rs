@@ -1,47 +1,36 @@
-struct User {
-    username: String,
-    age: u32,
-}
+use std::mem;
 
+#[derive(Debug)]
 struct Cell<T> {
     data: T,
-    next: Option<&Box<Cell<T>>>,
+    next: Option<Box<Cell<T>>>,
 }
 
-struct List<T> {
-    first: Cell<T>,
-    last: Cell<T>,
+pub struct SinglyList<T> {
+    first: Option<Box<Cell<T>>>,
 }
 
-fn new_list<T>(data: T) -> List<T> {
-    let cell = Cell { data, next: None };
-    List {
-        first: cell,
-        last: cell,
+impl<T> SinglyList<T> {
+    pub fn new() -> Self{
+        SinglyList{
+            first: None,
+        }
     }
-}
 
-impl<T> List<T> {
-    fn insert_start(&mut self, data: T) {
+    pub fn insert_start(&mut self, data: T) {
+        let old_first = mem::replace(&mut self.first, None);
         let cell = Cell {
             data,
-            next: Some(Box::new(self.first)),
+            next: old_first,
         };
-        self.first = cell;
+        self.first = Some(Box::new(cell));
     }
 }
 
 fn main() {
-    let user1 = User {
-        username: String::from("matheustalves"),
-        age: 24,
-    };
-
-    let user2 = User {
-        username: String::from("anthonykiedis"),
-        age: 59,
-    };
-
-    let list = new_list(user1);
-    list.insert_start(user2);
+    // let mut list = new_list(42);
+    let mut list = SinglyList::new();
+    list.insert_start(79);
+    list.insert_start(89);
+    print!("{:?}",list.first);
 }
