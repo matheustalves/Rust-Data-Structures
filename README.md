@@ -7,6 +7,9 @@ Data Structures implemented so far:
 
 TODO:
 - Doubly List
+- Stack
 - Queue
 - Hashes
 - Trees
+- Heap
+- Graph
